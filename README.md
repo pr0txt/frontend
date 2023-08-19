@@ -26,4 +26,4 @@ Note: Replace pnpm with your prefered package manager (npm or yarn for example)
 
 ## Configuring
 
-If you configure a .env file (just copy [.env.example](https://github.com/pr0txt/frontend/blob/main/.env.example) over to '.env' and fill in the options) you can configure a range of options.
+Before you start the application for the first time, you have to create a .env file (just copy [.env.example](https://github.com/pr0txt/frontend/blob/main/.env.example) over to '.env') and configure the MongoDB database connection.
