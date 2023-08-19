@@ -1,0 +1,14 @@
+# folders
+.next/
+build/
+logs/
+node_modules/
+
+# files
+.env
+.env.local
+.DS_Store
+.Trashes
+*.swp
+.eslintcache
+pnpm-lock.yaml

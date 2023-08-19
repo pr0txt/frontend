@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	@apply flex min-w-min flex-col items-center justify-between bg-white font-sans dark:bg-gray-800;
+}

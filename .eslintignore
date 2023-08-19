@@ -1,0 +1,8 @@
+pm2
+build/
+node_modules/
+.next/
+public/
+next.config.js
+postcss.config.js
+tailwind.config.js
