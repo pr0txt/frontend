@@ -12,9 +12,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        
-    env:
-      SSH_KEY: ${{secrets.SSH_KEY}}
       
     steps:
       - name: Checkout Main Branch
