@@ -66,6 +66,12 @@ export const getComments = async () => {
 								{
 									'origin.name': 'comment',
 								},
+								{
+									'data.title': { $ne: '' },
+								},
+								{
+									'data.content': { $ne: '' },
+								},
 							],
 						},
 					},
@@ -98,28 +104,51 @@ export const getCountries = async () => {
 		{
 			$lookup: {
 				from: 'sites',
-				localField: '_id',
-				foreignField: 'countryId',
+				let: { countryId: '$_id' },
+				pipeline: [
+					{
+						$match: { $expr: { $eq: ['$countryId', '$$countryId'] } },
+					},
+					{
+						$lookup: {
+							from: 'jobs',
+							let: { siteId: '$_id' },
+							pipeline: [
+								{
+									$match: {
+										$and: [
+											{
+												$expr: { $eq: ['$siteId', '$$siteId'] },
+											},
+											{
+												'data.title': { $ne: '' },
+											},
+											{
+												'data.content': { $ne: '' },
+											},
+										],
+									},
+								},
+								{
+									$project: {
+										_id: 1,
+									},
+								},
+							],
+							as: 'jobs',
+						},
+					},
+					{
+						$addFields: {
+							jobsCount: { $size: '$jobs' },
+						},
+					},
+				],
 				as: 'sites',
 			},
 		},
 		{
 			$unwind: '$sites',
-		},
-		{
-			$lookup: {
-				from: 'jobs',
-				localField: 'sites._id',
-				foreignField: 'siteId',
-				as: 'sites.jobs',
-			},
-		},
-		{
-			$addFields: {
-				'sites.jobsCount': {
-					$size: '$sites.jobs',
-				},
-			},
 		},
 		{
 			$sort: { 'sites.baseUrl': 1 },
@@ -145,9 +174,10 @@ export const getCountries = async () => {
 				},
 			},
 		},
-	])
-		.collation({ locale: 'de' })
-		.sort({ name: 1, publicBroadcasters: 1 });
+		{
+			$sort: { name: 1, publicBroadcasters: 1 },
+		},
+	]);
 };
 
 export const getMessages = async () => {
@@ -214,6 +244,12 @@ export const getMessages = async () => {
 								{
 									'origin.name': 'message',
 								},
+								{
+									'data.title': { $ne: '' },
+								},
+								{
+									'data.content': { $ne: '' },
+								},
 							],
 						},
 					},
@@ -243,6 +279,18 @@ export const getMessages = async () => {
 
 export const getTotal = async () => {
 	return Job.aggregate([
+		{
+			$match: {
+				$and: [
+					{
+						'data.title': { $ne: '' },
+					},
+					{
+						'data.content': { $ne: '' },
+					},
+				],
+			},
+		},
 		{
 			$group: {
 				_id: '$origin.name',
