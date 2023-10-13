@@ -11,4 +11,3 @@ node_modules/
 .Trashes
 *.swp
 .eslintcache
-pnpm-lock.yaml

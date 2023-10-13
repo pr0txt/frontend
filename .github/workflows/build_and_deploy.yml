@@ -25,14 +25,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           
+      - name: Install PNPM
+        run: npm install pnpm -g
+
+      - name: Setup PNPM
+        run: pnpm init
+
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Move .env File
         run: mv .env.example .env
         
       - name: Build Website
-        run: npm run build
+        run: pnpm run build
         
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
